@@ -27,6 +27,12 @@ theme:
       primary: teal
       accent: lime
 
+nav:
+  - Home: README.md
+  - It Works Module:
+    - Working Module: How-It-Works/README.md
+    - Really Works Module: How-It-Works/Really-Works/README.md
+
 plugins:
   - social
   - search
