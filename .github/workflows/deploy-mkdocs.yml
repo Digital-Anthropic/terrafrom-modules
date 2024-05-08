@@ -1,0 +1,44 @@
+name: Deploy MkDocs to S3 and CloudFront
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install AWS CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y awscli
+        aws --version
+
+    - name: Install dependencies
+      run: |
+        pip install mkdocs
+        pip install "mkdocs-material[imaging]"
+        mkdocs --version
+
+    - name: Build MkDocs site
+      run: |
+        mkdocs build
+
+    - name: Deploy to S3
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        aws s3 sync site/ s3://mkdocs-bucket/ --region ${{ secrets.AWS_DEFAULT_REGION }}
+
+    - name: Invalidate CloudFront cache
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID_MODULES }} --paths "/*" --region ${{ secrets.AWS_DEFAULT_REGION }}
