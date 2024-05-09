@@ -28,6 +28,8 @@ theme:
       accent: lime
 
 nav:
+  - Home: README.md
+  - Terraform-Automation: Terraform_Github_Automation/README.md
   - AWS:
     - S3-CloudFront-Lambda: AWS_S3_CloudFront_Lambda/README.md
 
