@@ -2,6 +2,8 @@ site_name: Digital Anthropic Modules
 repo_url: https://github.com/Digital-Anthropic
 theme:
   name: material
+  logo: assets/android-chrome-512x512.png
+  favicon: images/favicon.ico
   features:
     - navigation.tabs
     - navigation.sections
